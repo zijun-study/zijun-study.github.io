@@ -3,69 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的学习网站 - 首页</title>
+    <title>我的学习网站 - 知识的海洋，学习的殿堂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* CSS 样式部分 */
-        
-        /* 1. 变量定义 */
+        /* ========================================= */
+        /* 基础变量 & 通用样式             */
+        /* ========================================= */
         :root {
-            --sidebar-width: 250px; 
-            --header-height: 280px; /* **已修改：页头高度增加到 280px** */
-            --main-content-padding: 20px;
-            --sidebar-bg: #2c3e50; 
-            --link-color: #ecf0f1; 
-            --link-hover-bg: #34495e; 
-            --toggle-button-bg: #e74c3c; 
+            --primary-color: #3498db;     /* 品牌主色 (蓝色) */
+            --secondary-color: #2ecc71;   /* 强调色 (绿色) */
+            --dark-bg: #2c3e50;           /* 深色背景 */
+            --light-text: #ecf0f1;        /* 浅色文字 */
+            --gray-light: #f8f9fa;        /* 亮灰色背景 */
+            --gray-medium: #e0e0e0;       /* 中灰色 */
+            --sidebar-width: 280px;       /* 侧边栏宽度略宽 */
+            --header-height: 320px;       /* Header 高度进一步增加 */
+            --spacing-unit: 15px;         /* 基本间距单位 */
+            --border-radius: 8px;         /* 圆角 */
+            --transition-speed: 0.4s;     /* 动画过渡速度 */
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* 2. 通用样式重置 */
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif; /* 更改默认字体 */
+            background-color: var(--gray-light);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden; /* 防止水平滚动 */
         }
 
-        /* 3. 侧边导航栏 (Sidebar) */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif; /* 标题字体 */
+            color: var(--dark-bg);
+            margin-top: 0;
+            margin-bottom: var(--spacing-unit);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color var(--transition-speed) ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* ========================================= */
+        /* 侧边栏 (Sidebar) 样式           */
+        /* ========================================= */
         .sidebar {
             width: var(--sidebar-width);
-            background-color: var(--sidebar-bg);
-            color: var(--link-color);
-            position: fixed; 
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            position: fixed;
             top: 0;
             left: 0;
             height: 100%;
-            /* 侧边栏的内边距顶部现在只需要包含开关按钮的高度，不需要和 Header 对齐 */
             padding-top: 0; 
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000; 
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            transform: translateX(calc(0px - var(--sidebar-width))); /* 默认关闭 */
+            transition: transform var(--transition-speed) ease-in-out;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column; /* 垂直布局 */
         }
         
-        /* 侧边栏默认关闭时的状态 */
-        .sidebar.closed {
-            transform: translateX(calc(0px - var(--sidebar-width))); 
+        .sidebar.open { /* 侧边栏打开时的状态 */
+            transform: translateX(0);
         }
 
-        /* 4. 导航开关按钮 (现在在菜单内部的顶部) */
-        .sidebar-toggle {
-            /* 按钮现在是侧边栏内部的一个元素 */
-            width: 100%;
+        /* 侧边栏顶部品牌/标题 */
+        .sidebar-header {
+            padding: var(--spacing-unit) * 1.5;
+            background-color: rgba(0, 0, 0, 0.2);
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--light-text);
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
-            justify-content: flex-end; /* 按钮移到右侧 */
+            justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            background-color: #3f5a72; /* 导航栏顶部的背景色 */
-            color: white;
+        }
+        
+        .sidebar-header span {
+            flex-grow: 1; /* 让标题占据更多空间 */
+            text-align: center;
+            padding-left: 20px; /* 为关闭按钮留出空间 */
+        }
+
+        /* 导航开关按钮 (在菜单内部的顶部) */
+        .sidebar-toggle {
+            background-color: transparent; /* 透明背景 */
+            color: var(--light-text);
             border: none;
             cursor: pointer;
-            font-size: 1.5em; /* 增大图标 */
-            transition: background-color 0.2s;
+            font-size: 1.5em;
+            padding: 5px;
+            border-radius: var(--border-radius);
+            transition: color 0.2s ease;
+        }
+        .sidebar-toggle:hover {
+            color: var(--primary-color);
         }
 
-        .sidebar-toggle:hover {
-            background-color: #4a6781;
+        .sidebar nav {
+            flex-grow: 1; /* 导航列表占据剩余空间 */
+            overflow-y: auto; /* 允许滚动 */
         }
 
         .sidebar nav ul {
@@ -73,61 +121,247 @@
             padding: 0;
             margin: 0;
         }
-        
-        /* 5. 主内容区域 (Main Content) */
-        .main-content-wrapper {
-            flex-grow: 1; 
-            transition: margin-left 0.3s ease-in-out;
-            /* 默认关闭，所以初始不留空间 */
-            margin-left: 0;
+
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-unit);
+            padding: var(--spacing-unit) * 1.2;
+            text-decoration: none;
+            color: var(--light-text);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: background-color var(--transition-speed) ease, padding-left var(--transition-speed) ease;
         }
 
-        /* 侧边栏开启时，主内容区向右推开 */
-        .main-content-wrapper.shift-right {
+        .sidebar nav ul li a:hover {
+            background-color: var(--primary-color); /* 鼠标悬停变色 */
+            padding-left: var(--spacing-unit) * 2; /* 悬停时稍微右移 */
+        }
+        
+        .sidebar nav ul li a i {
+            font-size: 1.1em;
+            color: var(--secondary-color); /* 图标颜色 */
+            transition: transform 0.2s ease;
+        }
+
+        .sidebar nav ul li a:hover i {
+            transform: scale(1.1); /* 图标放大 */
+        }
+
+        /* ========================================= */
+        /* 主内容区域 (Main Content Wrapper) */
+        /* ========================================= */
+        .main-content-wrapper {
+            flex-grow: 1;
+            transition: margin-left var(--transition-speed) ease-in-out;
+            margin-left: 0; /* 默认不留空间 */
+            position: relative; /* 为绝对定位的打开按钮提供参考 */
+        }
+
+        .main-content-wrapper.shift-right { /* 侧边栏打开时，主内容区右移 */
             margin-left: var(--sidebar-width);
         }
 
-        /* 6. 页头 (Header) */
+        /* 主内容区顶部的菜单打开按钮 */
+        .menu-open-button {
+            position: fixed; /* 固定在视图中 */
+            top: var(--spacing-unit);
+            left: var(--spacing-unit); /* 默认显示在左上角 */
+            background-color: var(--primary-color); 
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 999; 
+            border-radius: var(--border-radius);
+            font-size: 1.2em;
+            box-shadow: var(--box-shadow);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .menu-open-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+
+        /* ========================================= */
+        /* 页头 (Header) 样式              */
+        /* ========================================= */
         .header {
             height: var(--header-height);
-            background: url('mainbg.png') no-repeat center center/cover; 
+            background: 
+                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), /* 半透明叠加层，增强文字可读性 */
+                url('mainbg.png') no-repeat center center/cover; 
             color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            animation: fadeIn 1.5s ease-out; /* 页面加载动画 */
         }
         
-        .header h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.5em;
-            background-color: rgba(0, 0, 0, 0.5); 
-            padding: 15px 30px;
-            border-radius: 8px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        }
-        
-        .header p {
-            margin: 0;
-            font-size: 1.3em;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 7. 主内容区域的内容 */
-        .main-content {
-            padding: var(--main-content-padding);
+        .header h1 {
+            margin: 0 0 var(--spacing-unit);
+            font-size: 3.5em; /* 增大标题 */
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
+            animation: slideInLeft 1s ease-out forwards;
+            opacity: 0; /* 初始隐藏 */
         }
+
+        .header p {
+            margin: 0;
+            font-size: 1.6em; /* 增大副标题 */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            animation: slideInRight 1s ease-out forwards;
+            animation-delay: 0.5s; /* 延迟出现 */
+            opacity: 0; /* 初始隐藏 */
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ========================================= */
+        /* 主内容 (Main Content) 样式      */
+        /* ========================================= */
+        .main-content {
+            padding: var(--spacing-unit) * 2;
+            max-width: 1200px; /* 限制内容宽度 */
+            margin: 30px auto; /* 居中显示 */
+            display: grid; /* 使用 Grid 布局 */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 响应式卡片布局 */
+            gap: var(--spacing-unit) * 2;
+        }
+
+        .card {
+            background-color: white;
+            padding: var(--spacing-unit) * 2;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px); /* 悬停上浮效果 */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-unit);
+            font-size: 1.5em;
+        }
+
+        .card p {
+            flex-grow: 1; /* 段落占据更多空间 */
+            margin-bottom: var(--spacing-unit);
+        }
+
+        .card-link {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            align-self: flex-start; /* 按钮靠左对齐 */
+        }
+
+        .card-link:hover {
+            background-color: #27ae60;
+            transform: scale(1.05);
+        }
+
+        /* 底部页脚 */
+        .footer {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            text-align: center;
+            padding: var(--spacing-unit) * 2;
+            margin-top: var(--spacing-unit) * 3;
+            font-size: 0.9em;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ========================================= */
+        /* 响应式设计 (Media Queries)      */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 200px;
+                --header-height: 250px;
+                --spacing-unit: 10px;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .header p {
+                font-size: 1.2em;
+            }
+
+            .main-content-wrapper.shift-right {
+                margin-left: var(--sidebar-width);
+            }
+
+            .menu-open-button {
+                left: var(--spacing-unit); /* 保持在左侧 */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .sidebar-header {
+                font-size: 1.2em;
+            }
+
+            .sidebar nav ul li a {
+                font-size: 0.9em;
+                padding: var(--spacing-unit);
+            }
+
+            .main-content {
+                padding: var(--spacing-unit);
+            }
+        }
+
     </style>
 </head>
 <body>
 
-    <aside class="sidebar closed" id="sidebar">
-        
-        <button class="sidebar-toggle" aria-label="Toggle Sidebar">
-            <i class="fas fa-times"></i> </button>
-
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span><i class="fas fa-graduation-cap"></i> 我的学习殿堂</span>
+            <button class="sidebar-toggle" aria-label="Close Sidebar">
+                <i class="fas fa-times"></i> </button>
+        </div>
         <nav>
             <ul>
                 <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
@@ -148,62 +382,80 @@
         </button>
 
         <header class="header">
-            <h1>我的学习网站</h1>
-            <p>Welcome to My Study Portal</p>
+            <h1>开启你的学习之旅</h1>
+            <p>Welcome to My Study Portal - Where Knowledge Grows!</p>
         </header>
 
         <main class="main-content">
-            <h2>欢迎来到首页</h2>
-            <p>这里是您网站的主要内容区域。请点击右上角的 **$\equiv$** 按钮来打开导航栏。</p>
-            <p>页头高度已调整到 $280\text{px}$。</p>
-            <h3>内容列表</h3>
-            <ul>
-                <li>Pengajian Am</li>
-                <li>MUET</li>
-                <li>Math</li>
-                <li>Biology</li>
-                <li>ICT</li>
-                <li>About Me</li>
-            </ul>
+            <div class="card">
+                <h3><i class="fas fa-star"></i> 欢迎来到学习中心</h3>
+                <p>这里是您学习和探索知识的起点。我们提供多领域的学习资源，助您轻松掌握所需技能。</p>
+                <a href="#" class="card-link">开始探索 <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-book-reader"></i> 深入 Pengajian Am</h3>
+                <p>了解国家社会、文化和政治体系的综合性学习。为您的未来打下坚实基础。</p>
+                <a href="#pengajian-am" class="card-link">查看详情 <i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-headset"></i> MUET 考试攻略</h3>
+                <p>提高您的英语水平，掌握 MUET 考试技巧，自信应对听说读写各项挑战。</p>
+                <a href="#muet" class="card-link">开始学习 <i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-square-root-alt"></i> 数学奥秘探索</h3>
+                <p>从基础到高级，我们将带您走进数学的奇妙世界，解锁各种难题。</p>
+                <a href="#math" class="card-link">进入数学 <i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-microscope"></i> 生物科学之旅</h3>
+                <p>探索生命科学的奥秘，从细胞到生态系统，发现自然界的无限可能。</p>
+                <a href="#biology" class="card-link">探索生物 <i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-code"></i> ICT 技术前沿</h3>
+                <p>学习信息与通信技术，掌握编程、网络和数字工具，迎接信息时代挑战。</p>
+                <a href="#ict" class="card-link">学习 ICT <i class="fas fa-chevron-right"></i></a>
+            </div>
         </main>
+
+        <footer class="footer">
+            <p>&copy; 2023 我的学习网站. All rights reserved.</p>
+        </footer>
     </div>
 
     <script>
         const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.querySelector('.sidebar-toggle'); // 侧边栏内部的 X 按钮
-        const menuOpenButton = document.getElementById('menu-open-button'); // 主内容区顶部的 ≡ 按钮
+        const sidebarToggle = document.querySelector('.sidebar-toggle'); 
+        const menuOpenButton = document.getElementById('menu-open-button'); 
         const mainContentWrapper = document.getElementById('main-content-wrapper');
         
-        // --- 核心功能：切换导航栏状态 ---
         function toggleSidebar() {
-            // 切换侧边栏的 closed 状态
-            sidebar.classList.toggle('closed');
-            // 切换主内容区的 shift-right 状态
+            sidebar.classList.toggle('open'); // 切换 'open' 类
             mainContentWrapper.classList.toggle('shift-right');
 
-            // 切换 Menu Open Button 的显示状态
-            // 当侧边栏关闭时，显示 Menu Open Button (汉堡)
-            // 当侧边栏开启时，隐藏 Menu Open Button
-            if (sidebar.classList.contains('closed')) {
-                menuOpenButton.style.display = 'block';
+            // 根据侧边栏的打开状态切换打开按钮的显示
+            if (sidebar.classList.contains('open')) {
+                menuOpenButton.style.display = 'none'; // 侧边栏打开时隐藏打开按钮
             } else {
-                menuOpenButton.style.display = 'none';
+                menuOpenButton.style.display = 'block'; // 侧边栏关闭时显示打开按钮
             }
         }
 
         // 绑定事件
-        // 1. 点击侧边栏内部的 X 按钮（关闭）
-        sidebarToggle.addEventListener('click', toggleSidebar);
+        sidebarToggle.addEventListener('click', toggleSidebar); // 侧边栏内部的关闭按钮
+        menuOpenButton.addEventListener('click', toggleSidebar); // 主内容区顶部的打开按钮
         
-        // 2. 点击主内容区右上角的 ≡ 按钮（打开）
-        menuOpenButton.addEventListener('click', toggleSidebar);
-        
-        // --- 初始状态设置 ---
-        // 侧边栏默认是 closed，所以打开按钮应该显示
-        if (sidebar.classList.contains('closed')) {
-             menuOpenButton.style.display = 'block';
-        } else {
+        // 初始状态设置：默认侧边栏是关闭的，所以打开按钮应该显示
+        if (sidebar.classList.contains('open')) { // 注意这里是 'open' 类
              menuOpenButton.style.display = 'none';
+        } else {
+             menuOpenButton.style.display = 'block';
         }
 
     </script>
