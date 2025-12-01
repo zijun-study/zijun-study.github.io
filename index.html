@@ -48,12 +48,23 @@
             border-left: 5px solid #ff7f50; /* 创意边框 */
         }
 
+        /* 导航栏关闭按钮（打叉X）新样式 */
         .sidebar .close-btn {
             position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
+            top: 10px; /* 调整位置 */
+            right: 15px; /* 调整位置 */
+            font-size: 40px; /* 变大 */
+            color: #ff7f50; /* 强调色 */
+            text-decoration: none;
+            padding: 5px 10px;
+            line-height: 1;
+            transition: 0.3s;
+        }
+        
+        .sidebar .close-btn:hover {
+            color: #ffffff; /* 悬停时颜色变化 */
+            background-color: #ff6347; /* 悬停背景 */
+            border-radius: 5px;
         }
 
         .sidebar-header {
@@ -67,7 +78,7 @@
 
         /* --- 2. 头部 Hero Header 样式 --- */
         .hero-header {
-            height: 100vh; /* 全屏高度 */
+            height: 75vh; /* **修改：调小高度** */
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -194,6 +205,9 @@
         @media screen and (max-width: 768px) {
             .header-content h1 {
                 font-size: 2.5em;
+            }
+            .hero-header {
+                height: 50vh; /* 小屏幕上可以更矮 */
             }
         }
     </style>
