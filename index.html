@@ -51,20 +51,21 @@
         /* 导航栏关闭按钮（打叉X）新样式 */
         .sidebar .close-btn {
             position: absolute;
-            top: 10px; /* 调整位置 */
-            right: 15px; /* 调整位置 */
-            font-size: 40px; /* 变大 */
-            color: #ff7f50; /* 强调色 */
+            top: 10px; 
+            right: 10px; 
+            font-size: 40px; 
+            color: #ff7f50; 
             text-decoration: none;
-            padding: 5px 10px;
+            padding: 5px 15px;
             line-height: 1;
             transition: 0.3s;
+            border-radius: 50%; /* 圆形效果的基础 */
         }
         
         .sidebar .close-btn:hover {
-            color: #ffffff; /* 悬停时颜色变化 */
-            background-color: #ff6347; /* 悬停背景 */
-            border-radius: 5px;
+            color: #162447; /* 悬停时文字变为深色 */
+            background-color: #ffe45e; /* 悬停时背景变为亮黄色 */
+            box-shadow: 0 0 15px #ffe45e; /* 发光效果 */
         }
 
         .sidebar-header {
@@ -78,7 +79,7 @@
 
         /* --- 2. 头部 Hero Header 样式 --- */
         .hero-header {
-            height: 75vh; /* **修改：调小高度** */
+            height: 70vh; /* **修改：70% 视口高度** */
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -95,7 +96,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.6); /* 半透明遮罩，使文字清晰 */
+            background-color: rgba(0, 0, 0, 0.6); 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -104,7 +105,7 @@
         .header-content h1 {
             font-family: 'Montserrat', sans-serif;
             font-size: 4em;
-            color: #ffe45e; /* 醒目的标题颜色 */
+            color: #ffe45e; 
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
             margin: 0;
         }
@@ -155,7 +156,7 @@
         }
 
         .intro-card {
-            background-color: #1f4068; /* 卡片背景 */
+            background-color: #1f4068; 
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -177,7 +178,7 @@
             display: inline-block;
             margin-top: 20px;
             padding: 12px 25px;
-            background-color: #0088cc; /* Telegram 官方颜色 */
+            background-color: #0088cc; 
             color: white;
             text-decoration: none;
             border-radius: 30px;
@@ -217,12 +218,12 @@
     <nav id="sidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="toggleNav()">&times;</a> 
         <div class="sidebar-header">学习板块</div>
-        <a href="#pengajianam">📚 Pengajian Am</a>
-        <a href="#muet">🗣️ MUET</a>
-        <a href="#math">➗ Mathematics</a>
-        <a href="#ict">💻 ICT</a>
-        <a href="#biology">🧬 Biology</a>
-        <a href="#calendar">🗓️ Calendar</a>
+        <a href="pam.html">📚 Pengajian Am</a>
+        <a href="muet.html">🗣️ MUET</a>
+        <a href="math.html">➗ Mathematics</a>
+        <a href="ict.html">💻 ICT</a>
+        <a href="biology.html">🧬 Biology</a>
+        <a href="calander.html">🗓️ Calendar</a>
     </nav>
 
     <div id="main-content">
@@ -262,7 +263,6 @@
             const sidebar = document.getElementById("sidebar");
             const mainContent = document.getElementById("main-content");
             
-            // 侧边栏宽度设为 250px
             const sidebarWidth = "250px"; 
 
             if (sidebar.style.width === sidebarWidth) {
@@ -285,26 +285,22 @@
             if (charIndex < textToType.length) {
                 typedTextElement.textContent += textToType.charAt(charIndex);
                 charIndex++;
-                // 调整速度，这里是150毫秒
                 setTimeout(typeWriter, 150); 
             } else {
-                // 停止打字后，光标消失
                 typedTextElement.style.borderRight = 'none';
                 
-                // 创意：5秒后清除文字并重新开始，形成循环动画
+                // 5秒后重新开始
                 setTimeout(() => {
                     typedTextElement.textContent = "";
-                    // 重新显示光标
                     typedTextElement.style.borderRight = '.15em solid orange'; 
                     charIndex = 0;
                     typeWriter();
-                }, 5000); // 停留5秒后重新开始
+                }, 5000); 
             }
         }
 
         // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', function() {
-            // 启动打字机动画
             typeWriter();
             
             // 确保侧边栏默认是关闭状态
