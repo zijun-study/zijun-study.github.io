@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026年1月 创意日历</title>
-    <link rel="stylesheet" href="style.css"> <style>
-        /* 将CSS直接嵌入到这里，方便您直接复制粘贴 */
+    <title>互动创意日历 (2025/12 - 2027/03)</title>
+    <style>
+        /* --- 核心样式 --- */
         body {
             font-family: 'Arial', sans-serif;
             display: flex;
@@ -18,39 +18,53 @@
         }
 
         .calendar-container {
-            background: linear-gradient(135deg, #ffffff 0%, #e8e8ff 100%); /* 渐变背景 */
+            background: linear-gradient(135deg, #ffffff 0%, #e8e8ff 100%);
             border-radius: 20px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
             padding: 30px;
             text-align: center;
             width: 90%;
-            max-width: 600px;
-            border: 5px solid #6a5acd; /* 稍粗的边框 */
+            max-width: 650px;
+            border: 5px solid #6a5acd;
         }
 
-        .header {
+        /* --- 头部和控制区样式 --- */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            color: #483d8b; /* 深蓝色标题 */
-            position: relative;
+            padding: 0 10px;
+        }
+
+        .controls select {
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 2px solid #6a5acd;
+            background-color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .controls select:focus {
+            border-color: #ff6347;
+            outline: none;
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: 2.2em;
             margin: 0;
+            color: #483d8b;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        .header p {
-            font-size: 1.2em;
-            margin: 5px 0 0;
-            font-weight: bold;
-        }
-
+        /* --- 日历网格样式 --- */
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             font-weight: bold;
-            color: #6a5acd; /* 中蓝紫色 */
+            color: #6a5acd;
             border-bottom: 2px solid #6a5acd;
             padding-bottom: 10px;
             margin-bottom: 10px;
@@ -75,10 +89,14 @@
             font-weight: bold;
             font-size: 1.1em;
             color: #333;
+            min-height: 40px; /* 保证高度一致 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .day-cell:hover:not(.empty-day) {
-            background-color: #ffe4e1; /* 浅粉色悬停效果 */
+            background-color: #ffe4e1;
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -87,10 +105,10 @@
             visibility: hidden;
         }
 
-        /* 创意高亮标记 */
+        /* --- 高亮和创意标记样式 --- */
         .highlight {
             background-color: #ff6347; /* 亮红色背景 */
-            color: white;
+            color: white !important;
             border: 3px solid #ff0000;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
             position: relative;
@@ -99,7 +117,7 @@
             animation: pulse 1.5s infinite alternate;
         }
 
-        /* 动画定义 */
+        /* 闪烁动画 */
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -112,9 +130,9 @@
         }
 
         .highlight:hover {
-            background-color: #ff4500 !important; /* 更深的橙红色悬停 */
-            transform: scale(1.15); /* 悬停时更大 */
-            animation: none; /* 悬停时停止闪烁，更稳定 */
+            background-color: #ff4500 !important;
+            transform: scale(1.15);
+            animation: none;
         }
 
         /* 事件标记（浮动提示框） */
@@ -129,14 +147,14 @@
             border-radius: 8px;
             font-size: 0.8em;
             white-space: nowrap;
-            opacity: 0; /* 默认隐藏 */
+            opacity: 0;
             transition: opacity 0.3s ease, transform 0.3s ease;
-            pointer-events: none; /* 确保它不影响点击事件 */
+            pointer-events: none;
             z-index: 20;
         }
 
         .highlight:hover .event-label {
-            opacity: 1; /* 悬停时显示 */
+            opacity: 1;
             transform: translate(-50%, -120%);
         }
 
@@ -153,7 +171,7 @@
             font-size: 1.5em;
             font-weight: bold;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            display: none; /* 默认隐藏 */
+            display: none;
             z-index: 1000;
             border: 5px solid #ff4500;
             animation: fadeIn 0.5s ease;
@@ -168,9 +186,12 @@
 <body>
 
 <div class="calendar-container">
-    <div class="header">
-        <h1>2026 年 一月</h1>
-        <p>✨ 迎接 STPM Sem 1 的挑战! ✨</p>
+    <div class="controls">
+        <select id="yearSelect"></select>
+        <div class="header">
+            <h1 id="currentMonthYear"></h1>
+        </div>
+        <select id="monthSelect"></select>
     </div>
 
     <div class="weekdays">
@@ -184,82 +205,168 @@
     </div>
 
     <div class="days" id="calendar-days">
-        <div class="empty-day"></div>
-        <div class="empty-day"></div>
-        <div class="empty-day"></div>
-        
-        <div class="day-cell">1</div>
-        <div class="day-cell">2</div>
-        <div class="day-cell">3</div>
-        <div class="day-cell">4</div>
-        <div class="day-cell">5</div>
-        <div class="day-cell">6</div>
-        <div class="day-cell">7</div>
-        <div class="day-cell">8</div>
-        <div class="day-cell">9</div>
-        <div class="day-cell">10</div>
-        <div class="day-cell">11</div>
-        <div class="day-cell">12</div>
-        <div class="day-cell">13</div>
-        <div class="day-cell">14</div>
-        <div class="day-cell">15</div>
-        <div class="day-cell">16</div>
-        <div class="day-cell">17</div>
-        <div class="day-cell">18</div>
-        <div class="day-cell">19</div>
-        <div class="day-cell">20</div>
-        
-        <div class="day-cell highlight" data-event="STPM Sem 1">
-            21
-            <span class="event-label">STPM Sem 1</span>
-        </div>
-        <div class="day-cell highlight" data-event="STPM Sem 1">
-            22
-            <span class="event-label">STPM Sem 1</span>
-        </div>
-        <div class="day-cell">23</div>
-        <div class="day-cell">24</div>
-        <div class="day-cell">25</div>
-        <div class="day-cell highlight" data-event="STPM Sem 1">
-            26
-            <span class="event-label">STPM Sem 1</span>
-        </div>
-        <div class="day-cell highlight" data-event="STPM Sem 1">
-            27
-            <span class="event-label">STPM Sem 1</span>
-        </div>
-        <div class="day-cell highlight" data-event="STPM Sem 1">
-            28
-            <span class="event-label">STPM Sem 1</span>
-        </div>
-        <div class="day-cell">29</div>
-        <div class="day-cell">30</div>
-        <div class="day-cell">31</div>
-        
         </div>
 </div>
 
 <div class="click-message" id="clickMessage"></div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const highlightedDays = document.querySelectorAll('.highlight');
-        const clickMessage = document.getElementById('clickMessage');
+    // 核心数据: 高亮事件（格式: YYYY-MM-DD）
+    const EVENTS = {
+        '2026-01-21': 'STPM Sem 1',
+        '2026-01-22': 'STPM Sem 1',
+        '2026-01-26': 'STPM Sem 1',
+        '2026-01-27': 'STPM Sem 1',
+        '2026-01-28': 'STPM Sem 1'
+        // 您可以根据需要添加更多事件
+    };
 
-        highlightedDays.forEach(day => {
-            day.addEventListener('click', () => {
-                const eventName = day.getAttribute('data-event');
-                const date = day.textContent.trim().split('\n')[0]; // 获取日期数字
+    const monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+    
+    let currentYear = 2026; // 默认显示年份
+    let currentMonth = 0;   // 默认显示月份 (0 = 一月)
+
+    const yearSelect = document.getElementById('yearSelect');
+    const monthSelect = document.getElementById('monthSelect');
+    const currentMonthYearDisplay = document.getElementById('currentMonthYear');
+    const calendarDays = document.getElementById('calendar-days');
+    const clickMessage = document.getElementById('clickMessage');
+
+    /**
+     * 初始化年份和月份下拉菜单
+     */
+    function setupSelectors() {
+        // 设置年份选项 (2025 - 2027)
+        for (let y = 2025; y <= 2027; y++) {
+            const option = document.createElement('option');
+            option.value = y;
+            option.textContent = y + '年';
+            yearSelect.appendChild(option);
+        }
+
+        // 设置月份选项 (1 - 12)
+        monthNames.forEach((name, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = name;
+            monthSelect.appendChild(option);
+        });
+
+        // 根据当前时间设置默认值 (2025年12月1日)
+        currentYear = 2025;
+        currentMonth = 11; // 11 = 12月
+        
+        yearSelect.value = currentYear;
+        monthSelect.value = currentMonth;
+    }
+
+    /**
+     * 渲染日历主体
+     */
+    function renderCalendar() {
+        // 1. 清空旧日期
+        calendarDays.innerHTML = '';
+        
+        // 2. 更新头部显示
+        currentMonthYearDisplay.textContent = `${currentYear} 年 ${monthNames[currentMonth]}`;
+
+        // 3. 计算日历信息
+        const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        // 星期几 (0=周日, 1=周一, ..., 6=周六)
+        const startingDay = firstDayOfMonth.getDay(); 
+
+        // 4. 插入空日期单元格
+        for (let i = 0; i < startingDay; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.classList.add('empty-day');
+            calendarDays.appendChild(emptyCell);
+        }
+
+        // 5. 插入有日期的单元格
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayCell = document.createElement('div');
+            dayCell.classList.add('day-cell');
+            dayCell.textContent = day;
+
+            // 构造日期字符串，用于查找EVENTS
+            const monthPadded = String(currentMonth + 1).padStart(2, '0');
+            const dayPadded = String(day).padStart(2, '0');
+            const dateKey = `${currentYear}-${monthPadded}-${dayPadded}`;
+            
+            // 检查是否有事件
+            if (EVENTS[dateKey]) {
+                const eventName = EVENTS[dateKey];
+                dayCell.classList.add('highlight');
+                dayCell.setAttribute('data-event', eventName);
                 
-                // 显示浮动提示框
-                clickMessage.textContent = `${date}号 事件: ${eventName}`;
-                clickMessage.style.display = 'block';
+                // 添加悬停提示标签
+                const eventLabel = document.createElement('span');
+                eventLabel.classList.add('event-label');
+                eventLabel.textContent = eventName;
+                dayCell.appendChild(eventLabel);
 
-                // 3秒后自动隐藏
-                setTimeout(() => {
-                    clickMessage.style.display = 'none';
-                }, 3000);
-            });
+                // 绑定点击事件
+                dayCell.addEventListener('click', () => {
+                    // 显示浮动提示框
+                    clickMessage.textContent = `${currentYear}年${monthPadded}月${dayPadded}日 事件: ${eventName}`;
+                    clickMessage.style.display = 'block';
+
+                    // 3秒后自动隐藏
+                    setTimeout(() => {
+                        clickMessage.style.display = 'none';
+                    }, 3000);
+                });
+            }
+
+            calendarDays.appendChild(dayCell);
+        }
+        
+        // --- 特殊限制: 结束范围为 2027年3月 ---
+        if (currentYear === 2027 && currentMonth > 2) {
+             // 理论上不会发生，因为我们限制了下拉菜单，但作为安全检查
+             calendarDays.innerHTML = '<div style="grid-column: 1 / span 7; color: red; padding: 20px;">超出范围 (最多到 2027年3月)</div>';
+        }
+    }
+
+    /**
+     * 初始化函数
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+        setupSelectors();
+        renderCalendar(); // 首次渲染 (2025年12月)
+        
+        // 绑定事件监听器
+        yearSelect.addEventListener('change', (e) => {
+            currentYear = parseInt(e.target.value);
+            renderCalendar();
+        });
+
+        monthSelect.addEventListener('change', (e) => {
+            currentMonth = parseInt(e.target.value);
+            
+            // 边界检查: 限制在 2025/12 到 2027/03
+            if (currentYear === 2025 && currentMonth < 11) {
+                currentMonth = 11; // 最小为 2025年12月
+                monthSelect.value = 11;
+            } else if (currentYear === 2027 && currentMonth > 2) {
+                currentMonth = 2; // 最大为 2027年3月
+                monthSelect.value = 2;
+            }
+            
+            renderCalendar();
+        });
+        
+        // 绑定年份变动时的边界检查 (确保月下拉菜单跟随变动)
+        yearSelect.addEventListener('change', () => {
+            if (currentYear === 2025 && currentMonth < 11) {
+                currentMonth = 11;
+                monthSelect.value = 11;
+            } else if (currentYear === 2027 && currentMonth > 2) {
+                currentMonth = 2;
+                monthSelect.value = 2;
+            }
+            renderCalendar();
         });
     });
 </script>
