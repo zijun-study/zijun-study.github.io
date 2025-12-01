@@ -10,13 +10,13 @@
         
         /* 1. 变量定义 */
         :root {
-            --sidebar-width: 250px; /* 侧边栏宽度 */
-            --header-height: 300px; /* **已修改：页头高度为 210px** */
+            --sidebar-width: 250px; 
+            --header-height: 280px; /* **已修改：页头高度增加到 280px** */
             --main-content-padding: 20px;
-            --sidebar-bg: #2c3e50; /* 深蓝色背景 */
-            --link-color: #ecf0f1; /* 浅灰色链接文字 */
-            --link-hover-bg: #34495e; /* 鼠标悬停背景 */
-            --toggle-button-bg: #e74c3c; /* 红色按钮 */
+            --sidebar-bg: #2c3e50; 
+            --link-color: #ecf0f1; 
+            --link-hover-bg: #34495e; 
+            --toggle-button-bg: #e74c3c; 
         }
 
         /* 2. 通用样式重置 */
@@ -27,29 +27,45 @@
             background-color: #f4f4f4;
         }
 
-        /* 3. 布局容器 */
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* 4. 侧边导航栏 (Sidebar) */
+        /* 3. 侧边导航栏 (Sidebar) */
         .sidebar {
             width: var(--sidebar-width);
             background-color: var(--sidebar-bg);
             color: var(--link-color);
-            position: fixed; /* 固定在左侧 */
+            position: fixed; 
             top: 0;
             left: 0;
             height: 100%;
-            padding-top: var(--header-height); /* 为页头区域留出空间 */
+            /* 侧边栏的内边距顶部现在只需要包含开关按钮的高度，不需要和 Header 对齐 */
+            padding-top: 0; 
             transition: transform 0.3s ease-in-out;
-            z-index: 1000; /* 确保在最上层 */
+            z-index: 1000; 
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
         }
         
         /* 侧边栏默认关闭时的状态 */
         .sidebar.closed {
-            transform: translateX(calc(0px - var(--sidebar-width))); /* 完全移出屏幕 */
+            transform: translateX(calc(0px - var(--sidebar-width))); 
+        }
+
+        /* 4. 导航开关按钮 (现在在菜单内部的顶部) */
+        .sidebar-toggle {
+            /* 按钮现在是侧边栏内部的一个元素 */
+            width: 100%;
+            display: flex;
+            justify-content: flex-end; /* 按钮移到右侧 */
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #3f5a72; /* 导航栏顶部的背景色 */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5em; /* 增大图标 */
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: #4a6781;
         }
 
         .sidebar nav ul {
@@ -57,38 +73,24 @@
             padding: 0;
             margin: 0;
         }
-
-        .sidebar nav ul li a {
-            display: flex; /* 启用 Flex 布局 */
-            align-items: center;
-            gap: 10px; /* 图标和文字间距 */
-            padding: 15px var(--main-content-padding);
-            text-decoration: none;
-            color: var(--link-color);
-            border-bottom: 1px solid #3f5a72;
-            transition: background-color 0.2s;
-        }
-
-        .sidebar nav ul li a:hover {
-            background-color: var(--link-hover-bg);
-        }
         
         /* 5. 主内容区域 (Main Content) */
         .main-content-wrapper {
-            flex-grow: 1; /* 占据剩余空间 */
+            flex-grow: 1; 
             transition: margin-left 0.3s ease-in-out;
-            margin-left: var(--sidebar-width); /* 默认留出侧边栏的空间 */
+            /* 默认关闭，所以初始不留空间 */
+            margin-left: 0;
         }
 
-        /* 侧边栏默认关闭时，主内容区占满宽度 */
-        .main-content-wrapper.full-width {
-            margin-left: 0;
+        /* 侧边栏开启时，主内容区向右推开 */
+        .main-content-wrapper.shift-right {
+            margin-left: var(--sidebar-width);
         }
 
         /* 6. 页头 (Header) */
         .header {
             height: var(--header-height);
-            background: url('mainbg.png') no-repeat center center/cover; /* 设置背景图片 */
+            background: url('mainbg.png') no-repeat center center/cover; 
             color: white;
             display: flex;
             flex-direction: column;
@@ -99,46 +101,21 @@
         }
         
         .header h1 {
-            margin: 0 0 5px 0;
-            background-color: rgba(0, 0, 0, 0.5); /* 文字背景，提高可读性 */
-            padding: 10px 20px;
-            border-radius: 5px;
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+            background-color: rgba(0, 0, 0, 0.5); 
+            padding: 15px 30px;
+            border-radius: 8px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
         
         .header p {
             margin: 0;
-            font-size: 1.1em;
+            font-size: 1.3em;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
         }
 
-        /* 7. 导航开关按钮 */
-        .sidebar-toggle {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background-color: var(--toggle-button-bg); 
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            z-index: 1001; /* 确保在侧边栏和页头之上 */
-            border-radius: 5px;
-            transition: left 0.3s ease-in-out;
-            font-size: 1.2em;
-        }
-
-        /* 侧边栏关闭时，按钮位置 (默认) */
-        .sidebar-toggle.closed-position {
-            left: 15px;
-        }
-
-        /* 侧边栏开启时，按钮向右移动 */
-        .sidebar-toggle.open-position {
-            left: calc(var(--sidebar-width) + 15px);
-        }
-
-        /* 8. 主内容区域的内容 */
+        /* 7. 主内容区域的内容 */
         .main-content {
             padding: var(--main-content-padding);
         }
@@ -146,10 +123,11 @@
 </head>
 <body>
 
-    <button class="sidebar-toggle closed-position" aria-label="Toggle Sidebar">
-        <i class="fas fa-bars"></i> </button>
-
     <aside class="sidebar closed" id="sidebar">
+        
+        <button class="sidebar-toggle" aria-label="Toggle Sidebar">
+            <i class="fas fa-times"></i> </button>
+
         <nav>
             <ul>
                 <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
@@ -163,8 +141,12 @@
         </nav>
     </aside>
 
-    <div class="main-content-wrapper full-width" id="main-content-wrapper">
+    <div class="main-content-wrapper" id="main-content-wrapper">
         
+        <button class="menu-open-button" id="menu-open-button" aria-label="Open Sidebar">
+             <i class="fas fa-bars"></i>
+        </button>
+
         <header class="header">
             <h1>我的学习网站</h1>
             <p>Welcome to My Study Portal</p>
@@ -172,43 +154,58 @@
 
         <main class="main-content">
             <h2>欢迎来到首页</h2>
-            <p>这里是您网站的主要内容区域。导航栏目前是隐藏状态，请点击左上角的红色按钮 ($\equiv$) 来打开它。</p>
-            <p>请确保您已将名为 **mainbg.png** 的图片文件放置在与此 HTML 文件相同的目录下。</p>
-            <h3>课程大纲</h3>
+            <p>这里是您网站的主要内容区域。请点击右上角的 **$\equiv$** 按钮来打开导航栏。</p>
+            <p>页头高度已调整到 $280\text{px}$。</p>
+            <h3>内容列表</h3>
             <ul>
-                <li>**Pengajian Am:** 综合知识与国情</li>
-                <li>**MUET:** 英语能力测试准备</li>
-                <li>**Math:** 高级数学专题</li>
-                <li>**Biology:** 生物学进阶研究</li>
-                <li>**ICT:** 信息与通信技术基础</li>
+                <li>Pengajian Am</li>
+                <li>MUET</li>
+                <li>Math</li>
+                <li>Biology</li>
+                <li>ICT</li>
+                <li>About Me</li>
             </ul>
         </main>
     </div>
 
     <script>
         const sidebar = document.getElementById('sidebar');
-        const toggleButton = document.querySelector('.sidebar-toggle');
+        const sidebarToggle = document.querySelector('.sidebar-toggle'); // 侧边栏内部的 X 按钮
+        const menuOpenButton = document.getElementById('menu-open-button'); // 主内容区顶部的 ≡ 按钮
         const mainContentWrapper = document.getElementById('main-content-wrapper');
-
-        toggleButton.addEventListener('click', () => {
-            // 切换侧边栏和内容区的显示状态
+        
+        // --- 核心功能：切换导航栏状态 ---
+        function toggleSidebar() {
+            // 切换侧边栏的 closed 状态
             sidebar.classList.toggle('closed');
-            mainContentWrapper.classList.toggle('full-width');
-            
-            // 切换按钮的位置
-            toggleButton.classList.toggle('open-position');
-            toggleButton.classList.toggle('closed-position');
-            
-            // 切换图标：关闭时显示汉堡图标 (fa-bars)，开启时显示关闭图标 (fa-times)
-            const icon = toggleButton.querySelector('i');
+            // 切换主内容区的 shift-right 状态
+            mainContentWrapper.classList.toggle('shift-right');
+
+            // 切换 Menu Open Button 的显示状态
+            // 当侧边栏关闭时，显示 Menu Open Button (汉堡)
+            // 当侧边栏开启时，隐藏 Menu Open Button
             if (sidebar.classList.contains('closed')) {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars'); 
+                menuOpenButton.style.display = 'block';
             } else {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times'); 
+                menuOpenButton.style.display = 'none';
             }
-        });
+        }
+
+        // 绑定事件
+        // 1. 点击侧边栏内部的 X 按钮（关闭）
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        
+        // 2. 点击主内容区右上角的 ≡ 按钮（打开）
+        menuOpenButton.addEventListener('click', toggleSidebar);
+        
+        // --- 初始状态设置 ---
+        // 侧边栏默认是 closed，所以打开按钮应该显示
+        if (sidebar.classList.contains('closed')) {
+             menuOpenButton.style.display = 'block';
+        } else {
+             menuOpenButton.style.display = 'none';
+        }
+
     </script>
 
 </body>
