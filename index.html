@@ -1,199 +1,101 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的学习网站 - 首页</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* CSS 样式部分 */
-        
-        /* 1. 变量定义 */
-        :root {
-            --sidebar-width: 250px; /* 侧边栏宽度 */
-            --header-height: 200px; /* 页头高度 */
-            --main-content-padding: 20px;
-            --sidebar-bg: #2c3e50; /* 深蓝色背景 */
-            --link-color: #ecf0f1; /* 浅灰色链接文字 */
-            --link-hover-bg: #34495e; /* 鼠标悬停背景 */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Website</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
 
-        /* 2. 通用样式重置 */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
+    /* Sidebar */
+    #sidebar {
+      width: 230px;
+      background-color: #1e1e2f;
+      color: white;
+      padding-top: 20px;
+      position: fixed;
+      top: 0;
+      left: -230px; /* 默认关闭 */
+      height: 100%;
+      transition: 0.3s;
+    }
+    #sidebar.active {
+      left: 0;
+    }
+    #sidebar a {
+      display: block;
+      padding: 15px 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    #sidebar a:hover {
+      background-color: #33334d;
+    }
 
-        /* 3. 布局容器 */
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* 4. 侧边导航栏 (Sidebar) */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--sidebar-bg);
-            color: var(--link-color);
-            position: fixed; /* 固定在左侧 */
-            top: 0;
-            left: 0;
-            height: 100%;
-            padding-top: var(--header-height); /* 为页头区域留出空间 */
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000; /* 确保在最上层 */
-        }
-        
-        /* 侧边栏关闭时的状态 */
-        .sidebar.closed {
-            transform: translateX(calc(0px - var(--sidebar-width))); /* 完全移出屏幕 */
-        }
+    /* Content */
+    #content {
+      flex: 1;
+      margin-left: 0;
+      padding: 20px;
+      transition: 0.3s;
+    }
+    #content.shift {
+      margin-left: 230px;
+    }
 
-        .sidebar nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar nav ul li a {
-            display: block;
-            padding: 15px var(--main-content-padding);
-            text-decoration: none;
-            color: var(--link-color);
-            border-bottom: 1px solid #3f5a72;
-            transition: background-color 0.2s;
-        }
-
-        .sidebar nav ul li a:hover {
-            background-color: var(--link-hover-bg);
-        }
-        
-        /* 5. 主内容区域 (Main Content) */
-        .main-content-wrapper {
-            flex-grow: 1; /* 占据剩余空间 */
-            transition: margin-left 0.3s ease-in-out;
-            margin-left: var(--sidebar-width); /* 默认留出侧边栏的空间 */
-        }
-
-        /* 侧边栏关闭时，主内容区向左移动 */
-        .main-content-wrapper.full-width {
-            margin-left: 0;
-        }
-
-        /* 6. 页头 (Header) */
-        .header {
-            height: var(--header-height);
-            background: url('mainbg.png') no-repeat center center/cover; /* 设置背景图片 */
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header h1 {
-            background-color: rgba(0, 0, 0, 0.5); /* 文字背景，提高可读性 */
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        }
-
-        /* 7. 导航开关按钮 */
-        .sidebar-toggle {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background-color: #e74c3c; /* 红色按钮 */
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            z-index: 1001; /* 确保在侧边栏和页头之上 */
-            border-radius: 5px;
-            transition: left 0.3s ease-in-out;
-        }
-
-        /* 侧边栏关闭时，按钮向左移动 */
-        .sidebar-toggle.closed-position {
-            left: 15px;
-        }
-
-        /* 侧边栏开启时，按钮向右移动 */
-        .sidebar-toggle.open-position {
-            left: calc(var(--sidebar-width) + 15px);
-        }
-
-        /* 8. 主内容区域的内容 */
-        .main-content {
-            padding: var(--main-content-padding);
-        }
-    </style>
+    /* Toggle Button */
+    #toggle-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      padding: 10px 15px;
+      background-color: #1e1e2f;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
+  <button id="toggle-btn">☰ Menu</button>
 
-    <button class="sidebar-toggle open-position" aria-label="Toggle Sidebar">
-        <i class="fas fa-bars"></i> </button>
+  <div id="sidebar">
+    <a href="#home">Home</a>
+    <a href="#pa">Pengajian Am</a>
+    <a href="#muet">MUET</a>
+    <a href="#math">Math</a>
+    <a href="#bio">Biology</a>
+    <a href="#ict">ICT</a>
+    <a href="#about">About Me</a>
+  </div>
 
-    <aside class="sidebar" id="sidebar">
-        <nav>
-            <ul>
-                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#pengajian-am"><i class="fas fa-book"></i> Pengajian Am</a></li>
-                <li><a href="#muet"><i class="fas fa-language"></i> MUET</a></li>
-                <li><a href="#math"><i class="fas fa-calculator"></i> Math</a></li>
-                <li><a href="#biology"><i class="fas fa-dna"></i> Biology</a></li>
-                <li><a href="#ict"><i class="fas fa-laptop-code"></i> ICT</a></li>
-                <li><a href="#about-me"><i class="fas fa-user-circle"></i> About Me</a></li>
-            </ul>
-        </nav>
-    </aside>
+  <div id="content">
+    <!-- Header Image -->
+    <img src="mainbg.png" 
+         alt="Header Image"
+         style="width:100%; border-radius:10px; margin-bottom:20px; padding-bottom:10px;" />
 
-    <div class="main-content-wrapper" id="main-content-wrapper">
-        
-        <header class="header">
-            <h1>我的学习网站</h1>
-            <p>Welcome to My Study Portal</p>
-        </header>
+    <h1>Welcome to Your Learning Site</h1>
+    <p>Select a subject from the left navigation menu.</p>
+  </div>
 
-        <main class="main-content">
-            <h2>欢迎来到首页</h2>
-            <p>这里是您网站的主要内容区域。请在这里添加您的课程介绍、学习资料或其他重要信息。</p>
-            <p>请确保您已将名为 **mainbg.png** 的图片文件放置在与此 HTML 文件相同的目录下。</p>
-            <p>点击左上角的红色按钮来切换导航栏的显示/隐藏状态。</p>
-        </main>
-    </div>
+  <script>
+    const toggleBtn = document.getElementById('toggle-btn');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
 
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const toggleButton = document.querySelector('.sidebar-toggle');
-        const mainContentWrapper = document.getElementById('main-content-wrapper');
-
-        toggleButton.addEventListener('click', () => {
-            // 切换侧边栏的 closed 状态
-            sidebar.classList.toggle('closed');
-            // 切换主内容区的 full-width 状态
-            mainContentWrapper.classList.toggle('full-width');
-            // 切换按钮的位置类
-            toggleButton.classList.toggle('open-position');
-            toggleButton.classList.toggle('closed-position');
-            
-            // 切换图标 (可选：当关闭时显示汉堡，当开启时显示 X)
-            const icon = toggleButton.querySelector('i');
-            if (sidebar.classList.contains('closed')) {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            } else {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            }
-        });
-        
-        // 初始设置按钮图标为汉堡
-        toggleButton.querySelector('i').classList.add('fa-bars');
-    </script>
-
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      content.classList.toggle('shift');
+    });
+  </script>
 </body>
 </html>
