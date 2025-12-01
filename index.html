@@ -19,7 +19,8 @@
             --gray-light: #f8f9fa;        /* 亮灰色背景 */
             --sidebar-width: 280px;       /* 侧边栏宽度 */
             --header-height: 320px;       /* Header 高度 */
-            --spacing-unit: 15px;         /* 基本间距单位 */
+            --spacing-unit: 15px;         /* 基本间距单位 (15px) */
+            --spacing-large: 20px;        /* **新增：用于 20px 的大间隔** */
             --border-radius: 8px;         /* 圆角 */
             --transition-speed: 0.4s;     /* 动画过渡速度 */
             --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -71,7 +72,7 @@
             flex-direction: column;
         }
         
-        .sidebar.open { /* 侧边栏打开时的状态 */
+        .sidebar.open { 
             transform: translateX(0);
         }
 
@@ -122,29 +123,25 @@
             margin: 0;
         }
 
-        /* **** 导航键增大优化部分 **** */
+        /* 导航链接样式 */
         .sidebar nav ul li a {
             display: flex;
             align-items: center;
             gap: var(--spacing-unit);
-            /* 增大上下填充 */
             padding: var(--spacing-unit) * 1.5 var(--spacing-unit) * 1.2; 
             text-decoration: none;
             color: var(--light-text);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             transition: background-color var(--transition-speed) ease, padding-left var(--transition-speed) ease;
-            /* 增大字体大小 */
             font-size: 1.1em; 
         }
 
         .sidebar nav ul li a:hover {
             background-color: var(--primary-color); 
-            /* 悬停时右移的距离相应增大 */
             padding-left: var(--spacing-unit) * 2.5; 
         }
         
         .sidebar nav ul li a i {
-            /* 增大图标大小 */
             font-size: 1.3em; 
             color: var(--secondary-color);
             transition: transform 0.2s ease;
@@ -153,7 +150,6 @@
         .sidebar nav ul li a:hover i {
             transform: scale(1.1);
         }
-        /* **** 导航键增大优化部分结束 **** */
 
         /* ========================================= */
         /* 主内容区域 (Main Content Wrapper) */
@@ -169,17 +165,18 @@
             margin-left: var(--sidebar-width);
         }
 
-        /* 菜单打开按钮 - 固定在右上角，圆形 */
+        /* 菜单打开按钮 - 固定在左上角，圆形 */
         .menu-open-button {
             position: fixed; 
             top: var(--spacing-unit);
-            right: var(--spacing-unit) * 1.5;
+            /* **修改：固定在左上角，保持 1.5倍 间距** */
+            left: var(--spacing-unit) * 1.5; 
             background-color: var(--primary-color); 
             color: white;
             border: none;
             width: 50px;
             height: 50px;
-            border-radius: 50%; /* 圆形按钮 */
+            border-radius: 50%;
             cursor: pointer;
             z-index: 999; 
             font-size: 1.5em;
@@ -261,7 +258,6 @@
             margin: 30px auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            /* 增大 Grid 间距到 30px */
             gap: 30px; 
         }
 
@@ -277,14 +273,20 @@
 
         .card:hover {
             transform: translateY(-8px);
-            /* 增强阴影 */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); 
         }
 
         .card h3 {
             color: var(--primary-color);
-            margin-bottom: var(--spacing-unit);
+            /* **修改：卡片内部标题下方 20px 间隔** */
+            margin-bottom: var(--spacing-large); 
             font-size: 1.5em;
+        }
+
+        .card p {
+            flex-grow: 1;
+            /* **修改：卡片内部段落下方 20px 间隔** */
+            margin-bottom: var(--spacing-large); 
         }
 
         .card-link {
@@ -325,7 +327,7 @@
                 font-size: 2.5em;
             }
             .menu-open-button {
-                right: 15px;
+                left: 15px; /* 保持在左侧 */
             }
         }
         @media (max-width: 480px) {
@@ -421,7 +423,6 @@
         const menuOpenButton = document.getElementById('menu-open-button'); 
         const mainContentWrapper = document.getElementById('main-content-wrapper');
         
-        // --- 核心功能：切换导航栏状态 ---
         function toggleSidebar() {
             const isSidebarOpen = sidebar.classList.toggle('open');
             mainContentWrapper.classList.toggle('shift-right');
@@ -434,8 +435,7 @@
         sidebarToggle.addEventListener('click', toggleSidebar); 
         menuOpenButton.addEventListener('click', toggleSidebar); 
         
-        // --- 初始状态设置 ---
-        // 侧边栏默认是关闭的，所以需要确保打开按钮是显示的（即没有 hidden 类）
+        // 初始状态设置
         menuOpenButton.classList.remove('hidden');
     </script>
 
