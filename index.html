@@ -1,446 +1,302 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的学习网站 - 知识的海洋，学习的殿堂</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* ========================================= */
-        /* 基础变量 & 通用样式             */
-        /* ========================================= */
-        :root {
-            --primary-color: #3498db;     /* 品牌主色 (蓝色) */
-            --secondary-color: #2ecc71;   /* 强调色 (绿色) */
-            --dark-bg: #2c3e50;           /* 深色背景 */
-            --light-text: #ecf0f1;        /* 浅色文字 */
-            --gray-light: #f8f9fa;        /* 亮灰色背景 */
-            --gray-medium: #f0f0f0;       /* 用于分隔线和悬停背景 */
-            --sidebar-width: 280px;       /* 侧边栏宽度 */
-            --header-height: 320px;       /* Header 最小高度 */
-            --spacing-unit: 15px;         /* 基本间距单位 (15px) */
-            --spacing-large: 20px;        /* 用于 20px 的大间隔 */
-            --border-radius: 8px;         /* 圆角 */
-            --transition-speed: 0.4s;     /* 动画过渡速度 */
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
+    <title>Strive for Four - ZiJun Learning Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
 
+    <style>
+        /* 全局样式和字体设置 */
         body {
             margin: 0;
-            padding: 0;
             font-family: 'Roboto', sans-serif;
-            background-color: var(--gray-light);
-            color: #333;
+            background-color: #1a1a2e; /* 深色背景 */
+            color: #e4e4f0; /* 浅色文字 */
             line-height: 1.6;
-            overflow-x: hidden;
+            transition: margin-left .5s; /* 为主内容过渡做准备 */
+            overflow-x: hidden; /* 防止溢出 */
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Poppins', sans-serif;
-            color: var(--dark-bg);
-            margin-top: 0;
-            margin-bottom: var(--spacing-unit);
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--primary-color);
-            transition: color var(--transition-speed) ease;
-        }
-
-        a:hover {
-            color: var(--secondary-color);
-        }
-
-        /* ========================================= */
-        /* 侧边栏 (Sidebar) 样式           */
-        /* ========================================= */
+        /* --- 1. 侧边导航栏样式 --- */
         .sidebar {
-            width: var(--sidebar-width);
-            /* 更像正规网站的简洁样式 */
-            background-color: white; 
-            color: #333; 
+            height: 100%;
+            width: 0; /* 默认宽度为0，隐藏 */
             position: fixed;
+            z-index: 1000; /* 确保在最上层 */
             top: 0;
             left: 0;
-            height: 100%;
-            transform: translateX(calc(0px - var(--sidebar-width))); 
-            transition: transform var(--transition-speed) ease-in-out;
-            z-index: 1000;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); /* 更清晰的阴影 */
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sidebar.open { 
-            transform: translateX(0);
+            background-color: #162447; /* 导航栏深色 */
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.5s; /* 动画过渡 */
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
         }
 
-        /* 侧边栏顶部标题区域 */
-        .sidebar-header {
-            padding: var(--spacing-unit) * 1.5;
-            background-color: var(--primary-color); /* 顶部使用主色调 */
-            color: var(--light-text);
-            font-size: 1.5em;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .sidebar-header span {
-            text-align: left;
-            padding-left: 0;
-        }
-
-        /* 导航开关按钮 (在菜单内部的顶部) */
-        .sidebar-toggle {
-            background-color: transparent;
-            color: var(--light-text);
-            border: none;
-            cursor: pointer;
-            font-size: 1.5em;
-            padding: 5px;
-            transition: color 0.2s ease, transform 0.2s ease;
-        }
-        .sidebar-toggle:hover {
-            color: var(--secondary-color);
-            transform: rotate(90deg);
-        }
-
-        .sidebar nav {
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        .sidebar nav ul {
-            list-style: none;
-            padding: var(--spacing-unit) 0;
-            margin: 0;
-        }
-
-        /* 导航链接样式 */
-        .sidebar nav ul li a {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-unit);
-            padding: var(--spacing-unit) * 1.5 var(--spacing-unit) * 1.2; 
+        .sidebar a {
+            padding: 15px 15px 15px 30px;
             text-decoration: none;
-            color: #333; /* 链接文字为深色 */
-            border-bottom: 1px solid var(--gray-medium); /* 浅灰色分隔线 */
-            transition: background-color var(--transition-speed) ease, padding-left var(--transition-speed) ease;
-            font-size: 1.1em; 
+            font-size: 18px;
+            color: #a9a9ff;
+            display: block;
+            transition: 0.3s;
         }
 
-        .sidebar nav ul li a:hover {
-            background-color: var(--gray-medium); /* 悬停背景为浅灰色 */
-            padding-left: var(--spacing-unit) * 2.5; 
-        }
-        
-        .sidebar nav ul li a i {
-            font-size: 1.3em; 
-            color: var(--primary-color); /* 图标使用主色调 */
-            transition: transform 0.2s ease;
+        .sidebar a:hover {
+            color: #ffffff;
+            background-color: #1f4068; /* 悬停背景色 */
+            border-left: 5px solid #ff7f50; /* 创意边框 */
         }
 
-        .sidebar nav ul li a:hover i {
-            transform: scale(1.1);
+        .sidebar .close-btn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
         }
 
-        /* ========================================= */
-        /* 主内容区域 (Main Content Wrapper) */
-        /* ========================================= */
-        .main-content-wrapper {
-            flex-grow: 1;
-            transition: margin-left var(--transition-speed) ease-in-out;
-            margin-left: 0;
-            position: relative; 
+        .sidebar-header {
+            padding: 15px 30px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff7f50;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #334e78;
         }
 
-        /* 侧边栏现在是覆盖层，不推动主内容区 */
-        .main-content-wrapper.shift-right {
-             margin-left: 0; 
-        }
-
-        /* 菜单打开按钮 - 固定在左上角 */
-        .menu-open-button {
-            position: fixed; 
-            top: var(--spacing-unit);
-            left: var(--spacing-unit) * 1.5; /* 距离左侧 1.5倍 间距 */
-            background-color: var(--primary-color); 
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 999; 
-            font-size: 1.5em;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        /* --- 2. 头部 Hero Header 样式 --- */
+        .hero-header {
+            height: 100vh; /* 全屏高度 */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
             display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .menu-open-button:hover {
-            background-color: var(--secondary-color);
-            transform: scale(1.1);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .menu-open-button.hidden {
-            display: none;
-        }
-
-        /* ========================================= */
-        /* 页头 (Header) 样式              */
-        /* ========================================= */
-        .header {
-            /* 使用 min-height 以适应内容 */
-            min-height: var(--header-height);
-            background: 
-                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                url('mainbg.png') no-repeat center center/cover; 
-            color: white;
-            display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
+            text-align: center;
             position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            animation: fadeIn 1.5s ease-out;
-            /* 调整填充，确保内容不被左上角的按钮遮挡 */
-            padding-top: calc(var(--spacing-unit) * 3 + 50px);
-            padding-bottom: var(--spacing-unit);
-            height: auto; 
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
-        .header h1 {
-            margin: 0 0 var(--spacing-unit);
-            font-size: 3.5em;
-            font-weight: 700;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
-            line-height: 1.2;
-            animation: slideInLeft 1s ease-out forwards;
-            opacity: 0; 
-        }
-
-        .header p {
-            margin: 0;
-            font-size: 1.6em; 
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-            animation: slideInRight 1s ease-out forwards;
-            animation-delay: 0.5s; 
-            opacity: 0; 
-        }
-
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* ========================================= */
-        /* 主内容 (Main Content) 样式 & Footer      */
-        /* ========================================= */
-        .main-content {
-            padding: var(--spacing-unit) * 2;
-            max-width: 1200px;
-            margin: 30px auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px; 
-        }
-
-        .card {
-            background-color: white;
-            padding: var(--spacing-unit) * 2;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6); /* 半透明遮罩，使文字清晰 */
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); 
+        .header-content h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4em;
+            color: #ffe45e; /* 醒目的标题颜色 */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin: 0;
         }
 
-        .card h3 {
-            color: var(--primary-color);
-            margin-bottom: var(--spacing-large); 
-            font-size: 1.5em;
+        /* 标题打字机动画样式 */
+        #typed-text {
+            border-right: .15em solid orange; /* 光标效果 */
+            white-space: nowrap;
+            overflow: hidden;
         }
 
-        .card p {
-            flex-grow: 1;
-            margin-bottom: var(--spacing-large); 
-        }
-
-        .card-link {
-            display: inline-block;
-            background-color: var(--secondary-color);
+        /* --- 侧边栏开关按钮 --- */
+        .open-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #ff7f50;
             color: white;
-            padding: 8px 15px;
-            border-radius: var(--border-radius);
-            text-align: center;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            align-self: flex-start;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            z-index: 999;
+            transition: 0.3s;
         }
 
-        .card-link:hover {
-            background-color: #27ae60;
-            transform: scale(1.05);
+        .open-btn:hover {
+            background-color: #ff6347;
         }
 
-        .footer {
-            background-color: var(--dark-bg);
-            color: var(--light-text);
+
+        /* --- 3. 关于我的内容样式 --- */
+        .about-me-section {
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
             text-align: center;
-            padding: var(--spacing-unit) * 2;
-            margin-top: var(--spacing-unit) * 3;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            color: #ff7f50;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #334e78;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .intro-card {
+            background-color: #1f4068; /* 卡片背景 */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+
+        .intro-card p {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        .intro-card strong {
+            color: #ffe45e;
+            font-size: 1.3em;
+        }
+
+        /* Telegram 按钮样式 */
+        .telegram-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #0088cc; /* Telegram 官方颜色 */
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .telegram-button:hover {
+            background-color: #0077b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- 4. 底部样式 --- */
+        .site-footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #162447;
+            color: #a9a9ff;
             font-size: 0.9em;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 50px;
         }
 
-        /* ========================================= */
-        /* 响应式设计 (Media Queries)      */
-        /* ========================================= */
-        @media (max-width: 768px) {
-            :root {
-                --sidebar-width: 250px;
-                --header-height: 250px;
-            }
-            .header h1 {
+        /* 媒体查询：适配小屏幕 */
+        @media screen and (max-width: 768px) {
+            .header-content h1 {
                 font-size: 2.5em;
-            }
-            .menu-open-button {
-                left: 15px; 
-            }
-        }
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 2em;
-            }
-            .menu-open-button {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2em;
             }
         }
     </style>
 </head>
 <body>
 
-    <button class="menu-open-button" id="menu-open-button" aria-label="Open Sidebar">
-         <i class="fas fa-bars"></i>
-    </button>
-    
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <span><i class="fas fa-graduation-cap"></i> 学习目录</span>
-            <button class="sidebar-toggle" aria-label="Close Sidebar">
-                <i class="fas fa-times"></i> </button>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#pengajian-am"><i class="fas fa-book"></i> Pengajian Am</a></li>
-                <li><a href="#muet"><i class="fas fa-language"></i> MUET</a></li>
-                <li><a href="#math"><i class="fas fa-calculator"></i> Math</a></li>
-                <li><a href="#biology"><i class="fas fa-dna"></i> Biology</a></li>
-                <li><a href="#ict"><i class="fas fa-laptop-code"></i> ICT</a></li>
-                <li><a href="#calendar"><i class="fas fa-calendar-alt"></i> Calendar</a></li> 
-                <li><a href="#about-me"><i class="fas fa-user-circle"></i> About Me</a></li>
-            </ul>
-        </nav>
-    </aside>
+    <nav id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleNav()">&times;</a> 
+        <div class="sidebar-header">学习板块</div>
+        <a href="#pengajianam">📚 Pengajian Am</a>
+        <a href="#muet">🗣️ MUET</a>
+        <a href="#math">➗ Mathematics</a>
+        <a href="#ict">💻 ICT</a>
+        <a href="#biology">🧬 Biology</a>
+        <a href="#calendar">🗓️ Calendar</a>
+    </nav>
 
-    <div class="main-content-wrapper" id="main-content-wrapper">
-        
-        <header class="header">
-            <h1>开启你的学习之旅</h1>
-            <p>Welcome to My Study Portal - Where Knowledge Grows!</p>
+    <div id="main-content">
+        <button class="open-btn" onclick="toggleNav()">☰ Menu</button>
+
+        <header class="hero-header" style="background-image: url('mainbg.png');">
+            <div class="hero-overlay">
+                <div class="header-content">
+                    <h1><span id="typed-text"></span></h1>
+                </div>
+            </div>
         </header>
 
-        <main class="main-content">
-            <div class="card">
-                <h3><i class="fas fa-star"></i> 欢迎来到学习中心</h3>
-                <p>这里是您学习和探索知识的起点。我们提供多领域的学习资源，助您轻松掌握所需技能。</p>
-                <a href="#" class="card-link">开始探索 <i class="fas fa-arrow-right"></i></a>
+        <section class="about-me-section">
+            <h2 class="section-title">✨ 关于我 / About Me</h2>
+            <div class="intro-card">
+                <p><strong>Kong Zi Jun</strong></p>
+                <p>Student Form 6, SMK Syed Sirajuddin</p>
+                <p>很高兴你能来到这个学习中心。这里汇集了我学习的资源和笔记，目标是共同进步，**Strive for Four**!</p>
+                
+                <hr>
+                
+                <a href="https://t.me/zijun0108" target="_blank" class="telegram-button">
+                    🚀 联系我 (Telegram: @zijun0108)
+                </a>
             </div>
+        </section>
 
-            <div class="card">
-                <h3><i class="fas fa-book-reader"></i> 深入 Pengajian Am</h3>
-                <p>了解国家社会、文化和政治体系的综合性学习。为您的未来打下坚实基础。</p>
-                <a href="#pengajian-am" class="card-link">查看详情 <i class="fas fa-chevron-right"></i></a>
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-headset"></i> MUET 考试攻略</h3>
-                <p>提高您的英语水平，掌握 MUET 考试技巧，自信应对听说读写各项挑战。</p>
-                <a href="#muet" class="card-link">开始学习 <i class="fas fa-chevron-right"></i></a>
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-square-root-alt"></i> 数学奥秘探索</h3>
-                <p>从基础到高级，我们将带您走进数学的奇妙世界，解锁各种难题。</p>
-                <a href="#math" class="card-link">进入数学 <i class="fas fa-chevron-right"></i></a>
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-microscope"></i> 生物科学之旅</h3>
-                <p>探索生命科学的奥秘，从细胞到生态系统，发现自然界的无限可能。</p>
-                <a href="#biology" class="card-link">探索生物 <i class="fas fa-chevron-right"></i></a>
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-code"></i> ICT 技术前沿</h3>
-                <p>学习信息与通信技术，掌握编程、网络和数字工具，迎接信息时代挑战。</p>
-                <a href="#ict" class="card-link">学习 ICT <i class="fas fa-chevron-right"></i></a>
-            </div>
-        </main>
-
-        <footer class="footer">
-            <p>&copy; 2023 我的学习网站. All rights reserved.</p>
+        <footer class="site-footer">
+            <p>&copy; Copyright by ZiJun 2026. All Rights Reserved.</p>
         </footer>
     </div>
 
     <script>
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.querySelector('.sidebar-toggle'); 
-        const menuOpenButton = document.getElementById('menu-open-button'); 
-        const mainContentWrapper = document.getElementById('main-content-wrapper');
-        
-        function toggleSidebar() {
-            const isSidebarOpen = sidebar.classList.toggle('open');
-            // 侧边栏现在是覆盖层，不需要推动主内容区
-            // mainContentWrapper.classList.toggle('shift-right'); 
+        // --- 1. 侧边导航栏开关函数 ---
+        function toggleNav() {
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("main-content");
+            
+            // 侧边栏宽度设为 250px
+            const sidebarWidth = "250px"; 
 
-            // 切换打开按钮的可见性
-            menuOpenButton.classList.toggle('hidden', isSidebarOpen);
+            if (sidebar.style.width === sidebarWidth) {
+                // 关闭侧边栏
+                sidebar.style.width = "0";
+                mainContent.style.marginLeft = "0";
+            } else {
+                // 打开侧边栏
+                sidebar.style.width = sidebarWidth;
+                mainContent.style.marginLeft = sidebarWidth;
+            }
         }
 
-        // 绑定事件
-        sidebarToggle.addEventListener('click', toggleSidebar); 
-        menuOpenButton.addEventListener('click', toggleSidebar); 
-        
-        // 初始状态设置
-        menuOpenButton.classList.remove('hidden');
-    </script>
+        // --- 2. 打字机动画函数 ---
+        const textToType = "Strive for Four";
+        const typedTextElement = document.getElementById('typed-text');
+        let charIndex = 0;
 
+        function typeWriter() {
+            if (charIndex < textToType.length) {
+                typedTextElement.textContent += textToType.charAt(charIndex);
+                charIndex++;
+                // 调整速度，这里是150毫秒
+                setTimeout(typeWriter, 150); 
+            } else {
+                // 停止打字后，光标消失
+                typedTextElement.style.borderRight = 'none';
+                
+                // 创意：5秒后清除文字并重新开始，形成循环动画
+                setTimeout(() => {
+                    typedTextElement.textContent = "";
+                    // 重新显示光标
+                    typedTextElement.style.borderRight = '.15em solid orange'; 
+                    charIndex = 0;
+                    typeWriter();
+                }, 5000); // 停留5秒后重新开始
+            }
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 启动打字机动画
+            typeWriter();
+            
+            // 确保侧边栏默认是关闭状态
+            document.getElementById("sidebar").style.width = "0";
+            document.getElementById("main-content").style.marginLeft = "0";
+        });
+    </script>
 </body>
 </html>
