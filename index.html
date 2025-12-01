@@ -1,101 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Learning Website</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的学习网站 - 首页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS 样式部分 */
+        
+        /* 1. 变量定义 */
+        :root {
+            --sidebar-width: 250px; /* 侧边栏宽度 */
+            --header-height: 210px; /* **已修改：页头高度为 210px** */
+            --main-content-padding: 20px;
+            --sidebar-bg: #2c3e50; /* 深蓝色背景 */
+            --link-color: #ecf0f1; /* 浅灰色链接文字 */
+            --link-hover-bg: #34495e; /* 鼠标悬停背景 */
+            --toggle-button-bg: #e74c3c; /* 红色按钮 */
+        }
 
-    /* Sidebar */
-    #sidebar {
-      width: 230px;
-      background-color: #1e1e2f;
-      color: white;
-      padding-top: 20px;
-      position: fixed;
-      top: 0;
-      left: -230px; /* 默认关闭 */
-      height: 100%;
-      transition: 0.3s;
-    }
-    #sidebar.active {
-      left: 0;
-    }
-    #sidebar a {
-      display: block;
-      padding: 15px 20px;
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
-    }
-    #sidebar a:hover {
-      background-color: #33334d;
-    }
+        /* 2. 通用样式重置 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
 
-    /* Content */
-    #content {
-      flex: 1;
-      margin-left: 0;
-      padding: 20px;
-      transition: 0.3s;
-    }
-    #content.shift {
-      margin-left: 230px;
-    }
+        /* 3. 布局容器 */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 4. 侧边导航栏 (Sidebar) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--sidebar-bg);
+            color: var(--link-color);
+            position: fixed; /* 固定在左侧 */
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding-top: var(--header-height); /* 为页头区域留出空间 */
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000; /* 确保在最上层 */
+        }
+        
+        /* 侧边栏默认关闭时的状态 */
+        .sidebar.closed {
+            transform: translateX(calc(0px - var(--sidebar-width))); /* 完全移出屏幕 */
+        }
 
-    /* Toggle Button */
-    #toggle-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      padding: 10px 15px;
-      background-color: #1e1e2f;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 5px;
-    }
-  </style>
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar nav ul li a {
+            display: flex; /* 启用 Flex 布局 */
+            align-items: center;
+            gap: 10px; /* 图标和文字间距 */
+            padding: 15px var(--main-content-padding);
+            text-decoration: none;
+            color: var(--link-color);
+            border-bottom: 1px solid #3f5a72;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar nav ul li a:hover {
+            background-color: var(--link-hover-bg);
+        }
+        
+        /* 5. 主内容区域 (Main Content) */
+        .main-content-wrapper {
+            flex-grow: 1; /* 占据剩余空间 */
+            transition: margin-left 0.3s ease-in-out;
+            margin-left: var(--sidebar-width); /* 默认留出侧边栏的空间 */
+        }
+
+        /* 侧边栏默认关闭时，主内容区占满宽度 */
+        .main-content-wrapper.full-width {
+            margin-left: 0;
+        }
+
+        /* 6. 页头 (Header) */
+        .header {
+            height: var(--header-height);
+            background: url('mainbg.png') no-repeat center center/cover; /* 设置背景图片 */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            margin: 0 0 5px 0;
+            background-color: rgba(0, 0, 0, 0.5); /* 文字背景，提高可读性 */
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .header p {
+            margin: 0;
+            font-size: 1.1em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+        }
+
+        /* 7. 导航开关按钮 */
+        .sidebar-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background-color: var(--toggle-button-bg); 
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 1001; /* 确保在侧边栏和页头之上 */
+            border-radius: 5px;
+            transition: left 0.3s ease-in-out;
+            font-size: 1.2em;
+        }
+
+        /* 侧边栏关闭时，按钮位置 (默认) */
+        .sidebar-toggle.closed-position {
+            left: 15px;
+        }
+
+        /* 侧边栏开启时，按钮向右移动 */
+        .sidebar-toggle.open-position {
+            left: calc(var(--sidebar-width) + 15px);
+        }
+
+        /* 8. 主内容区域的内容 */
+        .main-content {
+            padding: var(--main-content-padding);
+        }
+    </style>
 </head>
 <body>
-  <button id="toggle-btn">☰ Menu</button>
 
-  <div id="sidebar">
-    <a href="#home">Home</a>
-    <a href="#pa">Pengajian Am</a>
-    <a href="#muet">MUET</a>
-    <a href="#math">Math</a>
-    <a href="#bio">Biology</a>
-    <a href="#ict">ICT</a>
-    <a href="#about">About Me</a>
-  </div>
+    <button class="sidebar-toggle closed-position" aria-label="Toggle Sidebar">
+        <i class="fas fa-bars"></i> </button>
 
-  <div id="content">
-    <!-- Header Image -->
-    <img src="mainbg.png" 
-         alt="Header Image"
-         style="width:100%; border-radius:10px; margin-bottom:20px; padding-bottom:10px;" />
+    <aside class="sidebar closed" id="sidebar">
+        <nav>
+            <ul>
+                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#pengajian-am"><i class="fas fa-book"></i> Pengajian Am</a></li>
+                <li><a href="#muet"><i class="fas fa-language"></i> MUET</a></li>
+                <li><a href="#math"><i class="fas fa-calculator"></i> Math</a></li>
+                <li><a href="#biology"><i class="fas fa-dna"></i> Biology</a></li>
+                <li><a href="#ict"><i class="fas fa-laptop-code"></i> ICT</a></li>
+                <li><a href="#about-me"><i class="fas fa-user-circle"></i> About Me</a></li>
+            </ul>
+        </nav>
+    </aside>
 
-    <h1>Welcome to Your Learning Site</h1>
-    <p>Select a subject from the left navigation menu.</p>
-  </div>
+    <div class="main-content-wrapper full-width" id="main-content-wrapper">
+        
+        <header class="header">
+            <h1>我的学习网站</h1>
+            <p>Welcome to My Study Portal</p>
+        </header>
 
-  <script>
-    const toggleBtn = document.getElementById('toggle-btn');
-    const sidebar = document.getElementById('sidebar');
-    const content = document.getElementById('content');
+        <main class="main-content">
+            <h2>欢迎来到首页</h2>
+            <p>这里是您网站的主要内容区域。导航栏目前是隐藏状态，请点击左上角的红色按钮 ($\equiv$) 来打开它。</p>
+            <p>请确保您已将名为 **mainbg.png** 的图片文件放置在与此 HTML 文件相同的目录下。</p>
+            <h3>课程大纲</h3>
+            <ul>
+                <li>**Pengajian Am:** 综合知识与国情</li>
+                <li>**MUET:** 英语能力测试准备</li>
+                <li>**Math:** 高级数学专题</li>
+                <li>**Biology:** 生物学进阶研究</li>
+                <li>**ICT:** 信息与通信技术基础</li>
+            </ul>
+        </main>
+    </div>
 
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('active');
-      content.classList.toggle('shift');
-    });
-  </script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleButton = document.querySelector('.sidebar-toggle');
+        const mainContentWrapper = document.getElementById('main-content-wrapper');
+
+        toggleButton.addEventListener('click', () => {
+            // 切换侧边栏和内容区的显示状态
+            sidebar.classList.toggle('closed');
+            mainContentWrapper.classList.toggle('full-width');
+            
+            // 切换按钮的位置
+            toggleButton.classList.toggle('open-position');
+            toggleButton.classList.toggle('closed-position');
+            
+            // 切换图标：关闭时显示汉堡图标 (fa-bars)，开启时显示关闭图标 (fa-times)
+            const icon = toggleButton.querySelector('i');
+            if (sidebar.classList.contains('closed')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars'); 
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times'); 
+            }
+        });
+    </script>
+
 </body>
 </html>
