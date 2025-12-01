@@ -63,7 +63,7 @@
             top: 0;
             left: 0;
             height: 100%;
-            transform: translateX(calc(0px - var(--sidebar-width))); 
+            transform: translateX(calc(0px - var(--sidebar-width))); /* 默认关闭 */
             transition: transform var(--transition-speed) ease-in-out;
             z-index: 1000;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
@@ -71,7 +71,7 @@
             flex-direction: column;
         }
         
-        .sidebar.open { 
+        .sidebar.open { /* 侧边栏打开时的状态 */
             transform: translateX(0);
         }
 
@@ -108,7 +108,7 @@
         }
         .sidebar-toggle:hover {
             color: var(--primary-color);
-            transform: rotate(90deg); /* 关闭按钮悬停旋转动画 */
+            transform: rotate(90deg);
         }
 
         .sidebar nav {
@@ -122,24 +122,30 @@
             margin: 0;
         }
 
+        /* **** 导航键增大优化部分 **** */
         .sidebar nav ul li a {
             display: flex;
             align-items: center;
             gap: var(--spacing-unit);
-            padding: var(--spacing-unit) * 1.2;
+            /* 增大上下填充 */
+            padding: var(--spacing-unit) * 1.5 var(--spacing-unit) * 1.2; 
             text-decoration: none;
             color: var(--light-text);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             transition: background-color var(--transition-speed) ease, padding-left var(--transition-speed) ease;
+            /* 增大字体大小 */
+            font-size: 1.1em; 
         }
 
         .sidebar nav ul li a:hover {
             background-color: var(--primary-color); 
-            padding-left: var(--spacing-unit) * 2; 
+            /* 悬停时右移的距离相应增大 */
+            padding-left: var(--spacing-unit) * 2.5; 
         }
         
         .sidebar nav ul li a i {
-            font-size: 1.1em;
+            /* 增大图标大小 */
+            font-size: 1.3em; 
             color: var(--secondary-color);
             transition: transform 0.2s ease;
         }
@@ -147,6 +153,7 @@
         .sidebar nav ul li a:hover i {
             transform: scale(1.1);
         }
+        /* **** 导航键增大优化部分结束 **** */
 
         /* ========================================= */
         /* 主内容区域 (Main Content Wrapper) */
@@ -162,34 +169,33 @@
             margin-left: var(--sidebar-width);
         }
 
-        /* 菜单打开按钮 - 固定在右上角，更精致 */
+        /* 菜单打开按钮 - 固定在右上角，圆形 */
         .menu-open-button {
             position: fixed; 
             top: var(--spacing-unit);
-            right: var(--spacing-unit) * 1.5; /* 放在右上角 */
+            right: var(--spacing-unit) * 1.5;
             background-color: var(--primary-color); 
             color: white;
             border: none;
-            width: 50px; /* 固定宽度 */
-            height: 50px; /* 固定高度 */
-            border-radius: 50%; /* **圆形按钮** */
+            width: 50px;
+            height: 50px;
+            border-radius: 50%; /* 圆形按钮 */
             cursor: pointer;
             z-index: 999; 
             font-size: 1.5em;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex; /* 居中图标 */
+            display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .menu-open-button:hover {
             background-color: var(--secondary-color);
-            transform: scale(1.1); /* 悬停放大 */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* 增强阴影 */
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
         
-        /* 确保按钮隐藏时不占用空间 */
         .menu-open-button.hidden {
             display: none;
         }
@@ -255,7 +261,8 @@
             margin: 30px auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-unit) * 2;
+            /* 增大 Grid 间距到 30px */
+            gap: 30px; 
         }
 
         .card {
@@ -270,7 +277,8 @@
 
         .card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            /* 增强阴影 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); 
         }
 
         .card h3 {
@@ -428,7 +436,6 @@
         
         // --- 初始状态设置 ---
         // 侧边栏默认是关闭的，所以需要确保打开按钮是显示的（即没有 hidden 类）
-        // 侧边栏默认没有 'open' 类，所以打开按钮默认显示
         menuOpenButton.classList.remove('hidden');
     </script>
 
